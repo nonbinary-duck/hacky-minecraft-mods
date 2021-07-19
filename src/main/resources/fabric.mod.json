@@ -1,38 +1,33 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "hacky-minecraft-mods",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Hacky Minecraft Mods",
+  "description": "Minecraft mods with zero consideration to the end user because the end user is me lol",
   "authors": [
-    "Me!"
+    "nonbinary-duck (Queen Villanelle)"
   ],
-  "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
-  },
+  "contact": {},
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "Apache 2",
+  "icon": "assets/frozen-block.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "hmm.Main"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "hmm.mixins.json"
   ],
 
   "depends": {
     "fabricloader": ">=0.11.3",
-    "fabric": "*",
     "minecraft": "1.17.x",
     "java": ">=16"
   },
   "suggests": {
-    "another-mod": "*"
   }
 }
