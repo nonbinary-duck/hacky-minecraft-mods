@@ -1,0 +1,26 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "gradle",
+			"id": "/home/villanelle/Documents/code/hacky-minecraft-modsrunClienthacky-minecraft-mods",
+			"script": "runClient",
+			"description": "Starts the 'null' run configuration",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"project": "hacky-minecraft-mods",
+			"buildFile": "/home/villanelle/Documents/code/hacky-minecraft-mods/build.gradle",
+			"rootProject": "hacky-minecraft-mods",
+			"projectFolder": "/home/villanelle/Documents/code/hacky-minecraft-mods",
+			"workspaceFolder": "/home/villanelle/Documents/code/hacky-minecraft-mods",
+			"args": "",
+			"javaDebug": false,
+			"problemMatcher": [
+				"$gradle"
+			],
+			"label": "gradle: runClient"
+		}
+	]
+}

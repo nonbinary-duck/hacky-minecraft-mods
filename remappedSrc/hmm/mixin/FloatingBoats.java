@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -24,16 +23,12 @@ import net.minecraft.world.World;
 @Mixin(BoatEntity.class)
 public abstract class FloatingBoats extends Entity
 {
-    // 5.333 m/s max
-    private float groundFriction = 0.85f;
-    // 11.000 m/s max is 0.92727
-    // 10.000 m/s max is 0.92
-    private float waterFriction = 0.92f;
+    private final float GROUND_MIN_SLIP = 0.85f;
     
-    private @Shadow float velocityDecay;
     private @Shadow Location location;
     private @Shadow Location lastLocation;
     private @Shadow float field_7714;
+    // public abstract @Shadow Vec3d getVelocity();
     protected abstract @Shadow Location getUnderWaterLocation();
     
     public FloatingBoats(EntityType<?> type, World world)
@@ -42,14 +37,9 @@ public abstract class FloatingBoats extends Entity
     }
 
     @Redirect(method = "updateVelocity()V", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/vehicle/BoatEntity;velocityDecay:F", opcode = Opcodes.GETFIELD))
-    private float ChangeVelocityDecay(BoatEntity boatEntity)
+    private float ChangeVelocityDecay(float velocityDecay)
     {
-        if (this.location == Location.IN_WATER)
-        {
-            return this.waterFriction;
-        }
-        
-        return this.velocityDecay;
+        return 30f;
     }
     
     @Inject(method = "method_7548()F", at = @At(value = "RETURN"), cancellable = true)
@@ -59,11 +49,15 @@ public abstract class FloatingBoats extends Entity
 
         if (Float.isNaN(rv)) return;
 
-        if (this.location == Location.ON_LAND)
+        if (this.location == Location.IN_WATER)
         {
-            if (rv > groundFriction) return;
-    
-            ci.setReturnValue(groundFriction);
+            
+        }
+        else
+        {
+            if (rv > GROUND_MIN_SLIP) return;
+
+            ci.setReturnValue(GROUND_MIN_SLIP);
         }
     }
 
