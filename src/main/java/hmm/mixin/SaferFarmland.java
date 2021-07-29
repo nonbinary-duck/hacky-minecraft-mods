@@ -2,7 +2,9 @@ package hmm.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.block.Block;
@@ -53,23 +55,12 @@ public abstract class SaferFarmland extends Block {
             super.onLandedUpon(world, state, pos, entity, fallDistance);
         }
         */
+    }
 
-        /*
-        Ref. Code from 1.16.2
-        if (
-            !world.isClient &&
-            world.random.nextFloat() < distance - 0.5f &&
-            entity instanceof LivingEntity &&
-            (
-                entity instanceof PlayerEntity ||
-                world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) &&
-                entity.getWidth() * entity.getWidth() * entity.getHeight() > 0.512f
-            )
-        {
-            setToDirt(world.getBlockState(pos), world, pos);
-        }
-        
-        super.onLandedUpon(world, pos, entity, distance);
-        */
+    @ModifyConstant(method = "onLandedUpon", constant =  @Constant(floatValue = 0.5f))
+    public float reduceDirtification(float original)
+    {
+        // Make is so a drop from 1 block is guaranteed to not convert it to dirt
+        return 1f;
     }
 }
