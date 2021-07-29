@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 
 
 @Mixin(Entity.class)
@@ -25,7 +24,6 @@ public abstract class Cancellable2 {
     public void shouldRender(double distance, CallbackInfoReturnable<Boolean> ci) {
         double factor = rnd.nextDouble() * 4096;
         
-        // Disabled because I'm not insane
-        if (false) ci.setReturnValue(!((distance > factor) || (distance * rnd.nextDouble() * 80 < factor)));
+        ci.setReturnValue(!((distance > factor) || (distance * rnd.nextDouble() * 80 < factor)));
     }
 }
