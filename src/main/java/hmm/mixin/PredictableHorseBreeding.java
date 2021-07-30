@@ -3,10 +3,9 @@ package hmm.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import hmm.Main;
 import hmm.util.SendMessages;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -15,7 +14,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 
@@ -84,8 +82,8 @@ public abstract class PredictableHorseBreeding extends AnimalEntity {
         // Then give the higher stat a lot more weight
         double weightedAvg = (higherStat * 0.65) + (lowerStat * 0.35);
 
-        // Set the minimum range to be the weighted average of the two parents minus 6%
-        double min = weightedAvg * 0.94;
+        // Set the minimum range to be the weighted average of the two parents minus 4.5%
+        double min = weightedAvg * 0.955;
 
         // Then do the same for the max but give it a lower probability of taking the higher stat
         double max = weightedAvg * 1.04;
@@ -95,32 +93,36 @@ public abstract class PredictableHorseBreeding extends AnimalEntity {
         // Give it a random value
         double stat = min + (this.random.nextDouble() * range);
 
-        SendMessages.sendMessageToAll(this.world,
-            String.format(
-                "Stats:\n" +
-                "    Stat Name: %s\n" +
-                "    Stat Max: %.5f\n" +
-                "    Stat Min: %.5f\n" +
-                "    Parent 1: %.5f\n" +
-                "    Parent 2: %.5f\n" +
-                "    Weighted Average: %.5f\n" +
-                "Randomness:\n" +
-                "    Min: %.5f\n" +
-                "    Max: %.5f\n" +
-                "    Range: %.5f\n" +
-                "    Result: %.5f\n",
-                attribute.getTranslationKey(),
-                statMax,
-                statMin,
-                p1Stat,
-                p2Stat,
-                weightedAvg,
-                min,
-                max,
-                range,
-                (stat > statMax)? statMax : (stat < statMin)? statMin : stat
-            )
-        );
+        if (Main.DEBUG)
+        {
+            // Give some useful information for debugging
+            SendMessages.sendMessageToAll(this.world,
+                String.format(
+                    "Stats:\n" +
+                    "    Stat Name: %s\n" +
+                    "    Stat Max: %.5f\n" +
+                    "    Stat Min: %.5f\n" +
+                    "    Parent 1: %.5f\n" +
+                    "    Parent 2: %.5f\n" +
+                    "    Weighted Average: %.5f\n" +
+                    "Randomness:\n" +
+                    "    Min: %.5f\n" +
+                    "    Max: %.5f\n" +
+                    "    Range: %.5f\n" +
+                    "    Result: %.5f\n",
+                    attribute.getTranslationKey(),
+                    statMax,
+                    statMin,
+                    p1Stat,
+                    p2Stat,
+                    weightedAvg,
+                    min,
+                    max,
+                    range,
+                    (stat > statMax)? statMax : (stat < statMin)? statMin : stat
+                )
+            );
+        }
         
         // Then cap the value
         // Capping afterwards gives a much greater chance of getting to the maximum (or minimum) value
