@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.util.hit.EntityHitResult;
@@ -30,11 +31,11 @@ public abstract class EnderPearlCollisions extends ThrownItemEntity {
             
             // Cancel collisions with living entities
             if (
-                !(
+                (
                     ((EntityHitResult)hitResult)
-                        .getEntity() instanceof LivingEntity
-                    )
+                        .getEntity() instanceof TntEntity
                 )
+            )
             {
                 ci.cancel();
             }
