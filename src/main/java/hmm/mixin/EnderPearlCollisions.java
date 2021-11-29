@@ -29,7 +29,7 @@ public abstract class EnderPearlCollisions extends ThrownItemEntity {
         if (hitResult.getType() == Type.ENTITY)
         {
             
-            // Cancel collisions with living entities
+            // Cancel collisions with tnt entities
             if (
                 (
                     ((EntityHitResult)hitResult)
