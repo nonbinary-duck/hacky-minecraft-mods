@@ -79,8 +79,8 @@ public abstract class PredictableHorseBreeding extends AnimalEntity {
         double higherStat = (p1Stat > p2Stat)? p1Stat : p2Stat;
         double lowerStat  = (p1Stat < p2Stat)? p1Stat : p2Stat;
 
-        // Then give the higher stat a lot more weight
-        double weightedAvg = (higherStat * 0.65) + (lowerStat * 0.35);
+        // Then give the higher stat a lower weight
+        double weightedAvg = (higherStat * 0.45) + (lowerStat * 0.55);
 
         // Set the minimum range to be the weighted average of the two parents minus 4.5%
         double min = weightedAvg * 0.955;
