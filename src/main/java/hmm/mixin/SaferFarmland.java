@@ -58,7 +58,7 @@ public abstract class SaferFarmland extends Block {
     }
 
     @ModifyConstant(method = "onLandedUpon", constant =  @Constant(floatValue = 0.5f))
-    public float reduceDirtification(float original)
+    public float reduceTrampling(float original)
     {
         // Make is so a drop from 1.1 metres is guaranteed to not convert it to dirt
         // This is 1.1 because farmland is 0.9 metres tall
