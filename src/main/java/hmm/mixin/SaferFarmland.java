@@ -24,7 +24,7 @@ public abstract class SaferFarmland extends Block {
     }
 
     @Inject(method = "onLandedUpon", at = @At(value = "HEAD"), cancellable = true)
-    public void preventDirtification(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance, CallbackInfo ci)
+    public void preventTrampling(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance, CallbackInfo ci)
     {
         if (!world.isClient)
         {
