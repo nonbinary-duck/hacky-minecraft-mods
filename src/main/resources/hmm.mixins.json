@@ -8,7 +8,8 @@
   "client": [
     "FloatingBoats",
     "SaferFarmland",
-    "PredictableHorseBreeding"
+    "PredictableHorseBreeding",
+    "EnderPearlCollisions"
   ],
   "injectors": {
     "defaultRequire": 1
