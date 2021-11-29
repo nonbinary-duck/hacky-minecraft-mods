@@ -6,9 +6,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.world.World;
 
 
@@ -22,7 +25,20 @@ public abstract class EnderPearlCollisions extends ThrownItemEntity {
     @Inject(method = "onCollision", at = @At(value = "HEAD"), cancellable = true)
     public void cancelCollisions(HitResult hitResult, CallbackInfo ci)
     {
-        if (hitResult.getType() == HitResult.Type.ENTITY) ci.cancel();
+        if (hitResult.getType() == Type.ENTITY)
+        {
+            
+            // Cancel collisions with living entities
+            if (
+                !(
+                    ((EntityHitResult)hitResult)
+                        .getEntity() instanceof LivingEntity
+                    )
+                )
+            {
+                ci.cancel();
+            }
+        }
     }
 
 }
