@@ -2,7 +2,9 @@ package hmm.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.block.Block;
@@ -22,7 +24,7 @@ public abstract class SaferFarmland extends Block {
     }
 
     @Inject(method = "onLandedUpon", at = @At(value = "HEAD"), cancellable = true)
-    public void preventDirtification(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance, CallbackInfo ci)
+    public void preventTrampling(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance, CallbackInfo ci)
     {
         if (!world.isClient)
         {
@@ -53,23 +55,13 @@ public abstract class SaferFarmland extends Block {
             super.onLandedUpon(world, state, pos, entity, fallDistance);
         }
         */
+    }
 
-        /*
-        Ref. Code from 1.16.2
-        if (
-            !world.isClient &&
-            world.random.nextFloat() < distance - 0.5f &&
-            entity instanceof LivingEntity &&
-            (
-                entity instanceof PlayerEntity ||
-                world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) &&
-                entity.getWidth() * entity.getWidth() * entity.getHeight() > 0.512f
-            )
-        {
-            setToDirt(world.getBlockState(pos), world, pos);
-        }
-        
-        super.onLandedUpon(world, pos, entity, distance);
-        */
+    @ModifyConstant(method = "onLandedUpon", constant =  @Constant(floatValue = 0.5f))
+    public float reduceTrampling(float original)
+    {
+        // Make is so a drop from 1.1 metres is guaranteed to not convert it to dirt
+        // This is 1.1 because farmland is 0.9 metres tall
+        return 1.1f;
     }
 }
