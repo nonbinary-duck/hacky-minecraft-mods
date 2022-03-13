@@ -11,6 +11,7 @@ import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 
@@ -24,13 +25,15 @@ public abstract class EnderPearlChunkLoading extends ThrownItemEntity {
     @Inject(method = "tick", at = @At(value = "HEAD"))
     public void loadChunks(CallbackInfo ci)
     {
-        ///summon minecraft:ender_pearl ~ ~3 ~ {Motion:[9d, 1d, 0d], Owner:[I; 706207697, 312292107, -1632308381, -284807443]}
+        // /data get entity @e[type=minecraft:ender_pearl, sort=nearest, limit=1] Owner
+        // /summon minecraft:ender_pearl ~ ~3 ~ {Motion:[0d, 1d, 0d], Owner:[I; 1229857164, -314688488, -2018928863, 686132395]}
         if (!this.getWorld().isClient())
         {
             // Calculate the next position and load it
             BlockPos nextPos = new BlockPos(this.getVelocity().add(this.getPos()));
+            Vec3d preciseNextPos = this.getVelocity().add(this.getPos());
 
-            // System.out.println("Pearl ticking, next pos will be x: " + nextPos.getX() + " z: " + nextPos.getZ());
+            // System.out.println("this x: " + this.getX() + " z: " + this.getZ() + " next x: " + preciseNextPos.getX() + " z: " + preciseNextPos.getZ());
             
             ChunkHelper.ForceLoadChunk(nextPos.getX(), nextPos.getZ(), 20, ((ServerWorld)this.getWorld()).getChunkManager());
         }

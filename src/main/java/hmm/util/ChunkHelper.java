@@ -3,8 +3,11 @@ package hmm.util;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import net.minecraft.server.world.ChunkTicket;
+import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.chunk.ChunkManager;
 
 public class ChunkHelper
 {
@@ -33,7 +36,6 @@ public class ChunkHelper
         // Force-load the chunk
         // chunkManager.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, true);
         // System.out.println("Set chunk force loaded: x:" + chunkPos.x + " z: " + chunkPos.z);
-        chunkManager.setChunkForced(chunkPos, true);
         
         // Java ugly mutex
         synchronized (ForceLoadedChunks)
@@ -65,6 +67,8 @@ public class ChunkHelper
                 }
             }
 
+            // System.out.println("Adding chunk ticket");
+            chunkManager.addTicket(ChunkTicketType.FORCED, chunkPos, 4, chunkPos);
             // System.out.println("Adding new entry x:" + chunkPos.x + " z: " + chunkPos.z);
             ForceLoadedChunks.add(new ChunkForceLoadingEntry(chunkManager, chunkPos, tickDuration, id));
         }
@@ -76,15 +80,9 @@ public class ChunkHelper
         {
             if (ForceLoadedChunks.size() == 0) return;
             
-            ListIterator<ChunkForceLoadingEntry> i = ForceLoadedChunks.listIterator();
-            int index;
-
-            LinkedList<Integer> indexesToRemove = new LinkedList<Integer>();
-            
-            while (i.hasNext())
+            for (int i = 0; i < ForceLoadedChunks.size(); i++)
             {
-                index = i.nextIndex();
-                ChunkForceLoadingEntry entry = i.next();
+                ChunkForceLoadingEntry entry = ForceLoadedChunks.get(i);
 
                 // If there's no time left, delete it
                 // First, decrement the time left
@@ -93,16 +91,12 @@ public class ChunkHelper
                     // System.out.println("Released chunk x:" + entry.pos.x + " z: " + entry.pos.z);
 
                     // Release the chunk
-                    entry.manager.setChunkForced(entry.pos, false);
+                    // System.out.println("Removing chunk ticket");
+                    entry.manager.removeTicket(ChunkTicketType.FORCED, entry.pos, 4, entry.pos);
 
                     // Delete the entry
-                    indexesToRemove.add(index);
+                    ForceLoadedChunks.remove(i--);
                 }
-            }
-
-            for (Integer integer : indexesToRemove)
-            {
-                ForceLoadedChunks.remove((int)integer);
             }
         }
     }
