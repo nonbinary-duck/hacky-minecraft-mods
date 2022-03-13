@@ -3,11 +3,9 @@ package hmm.util;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import net.minecraft.server.world.ChunkTicket;
 import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.chunk.ChunkManager;
 
 public class ChunkHelper
 {

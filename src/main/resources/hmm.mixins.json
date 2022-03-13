@@ -8,7 +8,8 @@
 		"SaferFarmland",
 		"EnderPearlCollisions",
 		"EnderPearlChunkLoading",
-		"MinecraftServerMixin"
+		"MinecraftServerMixin",
+		"AccurateProjectiles"
 	],
 	"client": [],
 	"injectors": {

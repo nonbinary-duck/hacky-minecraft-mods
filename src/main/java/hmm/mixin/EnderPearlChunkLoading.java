@@ -11,7 +11,6 @@ import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 
@@ -31,9 +30,6 @@ public abstract class EnderPearlChunkLoading extends ThrownItemEntity {
         {
             // Calculate the next position and load it
             BlockPos nextPos = new BlockPos(this.getVelocity().add(this.getPos()));
-            Vec3d preciseNextPos = this.getVelocity().add(this.getPos());
-
-            // System.out.println("this x: " + this.getX() + " z: " + this.getZ() + " next x: " + preciseNextPos.getX() + " z: " + preciseNextPos.getZ());
             
             ChunkHelper.ForceLoadChunk(nextPos.getX(), nextPos.getZ(), 20, ((ServerWorld)this.getWorld()).getChunkManager());
         }
