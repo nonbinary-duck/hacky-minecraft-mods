@@ -6,7 +6,6 @@
 	"mixins": [
 		"FloatingBoats",
 		"SaferFarmland",
-		"PredictableHorseBreeding",
 		"EnderPearlCollisions",
 		"EnderPearlChunkLoading",
 		"MinecraftServerMixin"
