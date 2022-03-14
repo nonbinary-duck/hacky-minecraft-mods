@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 @Mixin(EnderPearlEntity.class)
 public abstract class EnderPearlChunkLoading extends ThrownItemEntity
 {
-    public static final ChunkTicketType<ChunkPos> PEARL_CHUNK_LOADER_TICKET = ChunkTicketType.create("hmm_pearl_chunk_loader", Comparator.comparingLong(ChunkPos::toLong), 30);
+    private static final ChunkTicketType<ChunkPos> PEARL_CHUNK_LOADER_TICKET = ChunkTicketType.create("hmm_pearl_chunk_loader", Comparator.comparingLong(ChunkPos::toLong), 30);
 
     public EnderPearlChunkLoading(EntityType<? extends ThrownItemEntity> entityType, World world) {
         super(entityType, world);
