@@ -35,10 +35,13 @@ public abstract class EnderPearlChunkLoading extends ThrownItemEntity
         if (!this.getWorld().isClient())
         {
             // Calculate the next position and load it
-            BlockPos nextPos = new BlockPos(this.getVelocity().add(this.getPos()));
-            ChunkPos cnext = new ChunkPos(nextPos);
+            ChunkPos nextChunkPos = new ChunkPos(
+                new BlockPos(
+                    this.getVelocity().add(this.getPos())
+                )
+            );
 
-            System.out.println("Block x: " + nextPos.getX() + "z " + nextPos.getZ() + " Chunk x: " + cnext.x + "z " + cnext.z);
+            // System.out.println("Block x: " + nextPos.getX() + "z " + nextPos.getZ() + " Chunk x: " + cnext.x + "z " + cnext.z);
             
             // ChunkHelper.ForceLoadChunk(nextPos.getX(), nextPos.getZ(), 20, ((ServerWorld)this.getWorld()).getChunkManager());
 
@@ -46,14 +49,14 @@ public abstract class EnderPearlChunkLoading extends ThrownItemEntity
                 // Our custom ticket with timeout of 30 ticks, technically same as "unknown", though this is probably better
                 PEARL_CHUNK_LOADER_TICKET,
                 // The chunk to load
-                cnext,
+                nextChunkPos,
                 // The area to load
                 // net/minecraft/server/world/ChunkTickManager;shouldTickEntities(J)Z checks if level is smaller than 32
                 // net/minecraft/server/world/ChunkTickManager;addTicket(type, pos, radius, identifier)V sets the level to 33 - radius
                 // This makes the level of the chunk loaded 31, so 31 < 32 == true therefore entities are ticked, whereas 1 would make it so only blocks are ticked
                 2,
                 // The identifier to give the ticket
-                cnext
+                nextChunkPos
             );
         }
     }
