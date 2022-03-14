@@ -1,5 +1,6 @@
 package hmm.util;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -9,6 +10,11 @@ import net.minecraft.util.math.ChunkPos;
 
 public class ChunkHelper
 {
+    /**
+     * "Renamed" UNKNOWN chunk ticket
+     */
+    public static final ChunkTicketType<ChunkPos> PEARL_CHUNK_LOADER_TICKET = ChunkTicketType.create("hmm_pearl_chunk_loader", Comparator.comparingLong(ChunkPos::toLong), 30);
+    
     protected static LinkedList<ChunkForceLoadingEntry> ForceLoadedChunks = new LinkedList<ChunkForceLoadingEntry>();
     
     /**
