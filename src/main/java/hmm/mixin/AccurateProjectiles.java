@@ -19,8 +19,8 @@ public abstract class AccurateProjectiles extends Entity
     @ModifyVariable(method = "setVelocity", at = @At(value = "LOAD"), argsOnly = true, ordinal = 1)
     private float modifyDivergence(float original)
     {
-        // If it's a player and an ender pearl, set the accuracy to 100%
-        if (original == 1.0f && this.getType() == EntityType.ENDER_PEARL) return 0f;
+        // If it's a player and an ender pearl, set the accuracy to 50%
+        if (original == 1.0f && this.getType() == EntityType.ENDER_PEARL) return 0.5f;
         // If it's a player and an arrow, increase the accuracy by 25%
         if (original == 1.0f && this.getType() == EntityType.ARROW) return 0.75f;
         // Otherwise, use whatever
