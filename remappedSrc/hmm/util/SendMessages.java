@@ -3,7 +3,7 @@ package hmm.util;
 import java.util.List;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
@@ -46,7 +46,7 @@ public class SendMessages {
         
         for (PlayerEntity player : players) {
             player.sendMessage(
-                new LiteralText(
+                new LiteralTextContent(
                     message
                 )
                 , actionBar

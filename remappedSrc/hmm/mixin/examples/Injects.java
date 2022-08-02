@@ -15,8 +15,8 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.LiteralTextContent;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.explosion.Explosion;
@@ -33,11 +33,11 @@ public abstract class Injects extends LockableContainerBlockEntity {
     @Inject(method = "onClose", at = @At(value = "HEAD"))
     public void onCloseInject(PlayerEntity playerEntity, CallbackInfo ci)
     {
-        if (this.getName().asString().toLowerCase().contains("boom"))
+        if (this.getName().getContent().toLowerCase().contains("boom"))
         {
             explodeChest(playerEntity);
         }
-        else if (this.getName().asString().toLowerCase().contains("behind you!"))
+        else if (this.getName().getContent().toLowerCase().contains("behind you!"))
         {
             spawnSpooker(playerEntity);
         }
@@ -55,10 +55,10 @@ public abstract class Injects extends LockableContainerBlockEntity {
         chest.setPos(pos.x, pos.y, pos.z);
 
         // Send the player a message
-        playerEntity.sendMessage(new LiteralText("[" + chest.getName().asString() + "] BOOM!"), false);
+        playerEntity.sendMessage(new LiteralTextContent("[" + chest.getName().getContent() + "] BOOM!"), false);
 
         // Set the name to be something else
-        setCustomName(new TranslatableText("container.chest"));
+        setCustomName(new TranslatableTextContent("container.chest"));
         
         // Explode!
         world.createExplosion(chest, DamageSource.MAGIC, new ExplosionBehavior(), pos.x, pos.y, pos.z, 8.5f, false, Explosion.DestructionType.BREAK);
@@ -86,7 +86,7 @@ public abstract class Injects extends LockableContainerBlockEntity {
         spooker.lookAt(EntityAnchor.EYES, playerEntity.getPos());
 
         // Set their name
-        spooker.setCustomName(new LiteralText("BOO!"));
+        spooker.setCustomName(new LiteralTextContent("BOO!"));
 
         // Set their health to 2
         spooker.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(2.0);

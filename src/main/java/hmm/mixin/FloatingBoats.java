@@ -29,7 +29,7 @@ public abstract class FloatingBoats extends Entity
     private @Shadow float velocityDecay;
     private @Shadow Location location;
     private @Shadow Location lastLocation;
-    private @Shadow float field_7714;
+    // private @Shadow float field_7714;
     protected abstract @Shadow Location getUnderWaterLocation();
     
     public FloatingBoats(EntityType<?> type, World world)
@@ -48,7 +48,7 @@ public abstract class FloatingBoats extends Entity
         return this.velocityDecay;
     }
     
-    @Inject(method = "method_7548()F", at = @At(value = "RETURN"), cancellable = true)
+    @Inject(method = "getNearbySlipperiness()F", at = @At(value = "RETURN"), cancellable = true)
     private void speedyBoat(CallbackInfoReturnable<Float> ci)
     {
         Float rv = ci.getReturnValue();

@@ -11,13 +11,13 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.world.World;
 
 
-@Mixin(HorseBaseEntity.class)
+@Mixin(AbstractHorseEntity.class)
 public abstract class PredictableHorseBreeding extends AnimalEntity {
 
     protected PredictableHorseBreeding(EntityType<? extends AnimalEntity> entityType, World world) {
@@ -25,7 +25,7 @@ public abstract class PredictableHorseBreeding extends AnimalEntity {
     }
 
     @Inject(method = "setChildAttributes", at = @At(value = "HEAD"), cancellable = true)
-    protected void setChildAttributes(PassiveEntity mate, HorseBaseEntity child, CallbackInfo ci)
+    protected void setChildAttributes(PassiveEntity mate, AbstractHorseEntity child, CallbackInfo ci)
     {
         child.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH
             ).setBaseValue(
