@@ -9,7 +9,9 @@
 		"EnderPearlCollisions",
 		"EnderPearlChunkLoading",
 		"AccurateProjectiles",
-		"MultiDimensionalEnderPearls"
+		"MultiDimensionalEnderPearls",
+		"shenanigans/CheckRailUpdates",
+		"shenanigans/HelperTicker"
 	],
 	"client": [],
 	"injectors": {
