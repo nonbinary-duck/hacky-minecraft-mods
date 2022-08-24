@@ -66,7 +66,9 @@ public abstract class CreateFallingBlock extends FacingBlock
         
         // Destroy the falling block and the replacement block
         sWorld.removeBlockEntity(abovePush);
+        sWorld.removeBlock(abovePush, false);
         sWorld.removeBlockEntity(fallingBlock.getPos());
+        sWorld.removeBlock(fallingBlock.getPos(), false);
 
         // Cancel the event
         ci.setReturnValue(false);
