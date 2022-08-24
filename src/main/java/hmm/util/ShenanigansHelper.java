@@ -7,7 +7,7 @@ public class ShenanigansHelper
 {
     public static boolean glassBlockRemovedFromPoweredRail = false;
 
-    public static long railUpdatesThisTick = 0;
+    private static long railUpdatesThisTick = 0;
 
     public static void OnTickBegin()
     {
@@ -20,11 +20,16 @@ public class ShenanigansHelper
 
     public static boolean allowFunkyBehaviour = false;
 
-    public static void OnTickEnd()
+    public static void IncrementRailUpdateTicker()
     {
-        allowFunkyBehaviour = (railUpdatesThisTick >= 5 && glassBlockRemovedFromPoweredRail);
+        if (allowFunkyBehaviour) return;
+        
+        railUpdatesThisTick += 1;
 
-        if (allowFunkyBehaviour) System.out.println("funky behaviour achieved!");
-        if (railUpdatesThisTick > 0) System.out.println("Rails updated: " + railUpdatesThisTick);
+        allowFunkyBehaviour = (railUpdatesThisTick >= 512 && glassBlockRemovedFromPoweredRail);
+
+        // if (railUpdatesThisTick != 0 && glassBlockRemovedFromPoweredRail) System.out.println("u " + railUpdatesThisTick);
+
+        // if (allowFunkyBehaviour) System.out.println("Thing");
     }
 }

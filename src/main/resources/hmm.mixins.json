@@ -11,6 +11,7 @@
 		"AccurateProjectiles",
 		"MultiDimensionalEnderPearls",
 		"shenanigans/CheckRailUpdates",
+		"shenanigans/CreateFallingBlock",
 		"shenanigans/HelperTicker"
 	],
 	"client": [],

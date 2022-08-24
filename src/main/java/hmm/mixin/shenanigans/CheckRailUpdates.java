@@ -23,16 +23,18 @@ public abstract class CheckRailUpdates extends AbstractBlock
         super(settings);
     }
     
-    @Inject(method = "updateBlockState()V", at = @At("HEAD"))
+    @Inject(
+        method = "updateBlockState(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;)V",
+        at = @At("HEAD"))
     private void checkUpdateBlockState(BlockState state, World world, BlockPos pos, Block neighbour, CallbackInfo ci)
     {
-        // Only process updates for rails turning off since that behaviour is caused by budded rails
-        if (state.get(PoweredRailBlock.POWERED)) return;
+        if (world.isClient()) return;
         
-        // Increase the number of rail updates for this tick
-        ShenanigansHelper.railUpdatesThisTick += 1;
-
         // Record if a glass block has been retracted
         if (neighbour instanceof GlassBlock) ShenanigansHelper.glassBlockRemovedFromPoweredRail = true;
+        
+        // Only process updates for rails turning off since that behaviour is caused by budded rails
+        // Increase the number of rail updates for this tick
+        if (!state.get(PoweredRailBlock.POWERED)) ShenanigansHelper.IncrementRailUpdateTicker();
     }
 }

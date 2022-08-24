@@ -19,10 +19,4 @@ public abstract class HelperTicker
     {
         ShenanigansHelper.OnTickBegin();
     }
-
-    @Inject(method = "tick(Ljava/util/function/BooleanSupplier;)V", at = @At("RETURN"))
-    public void afterTick(BooleanSupplier shouldKeepTicking, CallbackInfo ci)
-    {
-        ShenanigansHelper.OnTickEnd();
-    }
 }
