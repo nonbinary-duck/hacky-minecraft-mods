@@ -10,10 +10,9 @@ import net.minecraft.block.FacingBlock;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.block.PaneBlock;
 import net.minecraft.block.PistonBlock;
-import net.minecraft.block.PistonExtensionBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.PistonBlockEntity;
+import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -50,7 +49,7 @@ public abstract class CreateFallingBlock extends FacingBlock
         if ( !( b32 instanceof PistonBlockEntity ) ) return;
 
         // Cast it to an actual block 32
-        PistonBlockEntity aboveGlass = (PistonBlockEntity)b32;
+        PistonBlockEntity targetBlock = (PistonBlockEntity)b32;
 
         // Then, search around to see if there's a falling block to replace with our b32
         PistonBlockEntity fallingBlock = getAdjacentThing(abovePush, world);
@@ -58,10 +57,19 @@ public abstract class CreateFallingBlock extends FacingBlock
         // Check to see if there is a falling block to replace
         if (fallingBlock == null) return;
 
-        System.out.println("Hi " + world.isClient());
+        // Cast the world to a serverWorld (we confirmed this earlier)
+        ServerWorld sWorld = (ServerWorld)world;
+
+        // Create a falling block with most of the position of the falling block and the block and data from the solid block
+        // This method calls world.spawnEntity()
+        FallingBlockEntity.spawnFromBlock(sWorld, fallingBlock.getPos(), targetBlock.getPushedBlock());
         
-        // Destroy the falling block
-        
+        // Destroy the falling block and the replacement block
+        sWorld.removeBlockEntity(abovePush);
+        sWorld.removeBlockEntity(fallingBlock.getPos());
+
+        // Cancel the event
+        ci.setReturnValue(false);
     }
 
     protected PistonBlockEntity getAdjacentThing(BlockPos pos, World world)
