@@ -68,11 +68,13 @@ public abstract class FallingBlockCrafting extends BlockEntity
         // Get what block we should be making
         Block recipe = FallingBlockCraftingHelper.getRecipe(fallingBlocks);
 
+        // Check that there is a valid recipe, return if not
+        if (recipe == null) return;
 
         // Transform the first entity into the recipe result and destroy the rest
         FallingBlockCraftingHelper.transformInto(fallingBlocks, recipe);
 
-
+        // Remove all but the modified falling block
         for (int i = 1; i < fallingBlocks.size(); i++)
         {
             fallingBlocks.get(i).discard();
