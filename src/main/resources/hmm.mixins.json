@@ -12,7 +12,8 @@
 		"MultiDimensionalEnderPearls",
 		"shenanigans/CheckRailUpdates",
 		"shenanigans/CreateFallingBlock",
-		"shenanigans/HelperTicker"
+		"shenanigans/HelperTicker",
+		"shenanigans/FallingBlockCrafting"
 	],
 	"client": [],
 	"injectors": {
