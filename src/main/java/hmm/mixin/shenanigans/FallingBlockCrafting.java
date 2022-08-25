@@ -31,20 +31,21 @@ public abstract class FallingBlockCrafting extends BlockEntity
 
     @Inject(
         method = "pushEntities",
-        at = @At(//"RETURN"))
-            // Inject our code only after checking this b32 can collide with stuff and there are definitely entities within its bounding box
-            value = "INVOKE",
-            target = "Lnet/minecraft/util/shape/VoxelShape;getBoundingBoxes()Ljava/util/List;",
-            // target = "Lnet/minecraft/block/AbstractBlock$AbstractBlockState;isOf(Lnet/minecraft/block/Block;)Z",
-            ordinal = 0,
-            shift = At.Shift.BEFORE))
+        at = @At("TAIL"))
+            // // Inject our code only after checking this b32 can collide with stuff and there are definitely entities within its bounding box
+            // value = "INVOKE",
+            // target = "Lnet/minecraft/util/shape/VoxelShape;getBoundingBoxes()Ljava/util/List;",
+            // // target = "Lnet/minecraft/block/AbstractBlock$AbstractBlockState;isOf(Lnet/minecraft/block/Block;)Z",
+            // ordinal = 0,
+            // shift = At.Shift.BEFORE))
             // Won't throw throwable, java is annoying
     private static void onPushEntities(World world, BlockPos pos, float f, PistonBlockEntity blockEntity, CallbackInfo ci) throws Throwable
     {
         // Only allow recipes for slime blocks
         if (!blockEntity.getPushedBlock().isOf(Blocks.SLIME_BLOCK)) return;
-        if (!world.isClient()) return;
+        if (world.isClient()) return;
 
+        // Only search for blocks in front of the slime
         Box pushBox = new Box(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
         List<FallingBlockEntity> fallingBlocks = world.getEntitiesByClass(
@@ -59,42 +60,50 @@ public abstract class FallingBlockCrafting extends BlockEntity
         // Get the fist element to compare to the others
         FallingBlockEntity ent = fallingBlocks.get(0);
         
-        // Check that all of the entities are all compatible (also adds the first element since we didn't set it to null)
-        List<FallingBlockEntity> components = getCompatibleEntities(ent, fallingBlocks);
-        
+        // Check that all of the entities are all compatible
         // If not all of the elements are compatible, stop
-        if (components.size() != fallingBlocks.size()) return;
+        if (getCompatibleEntities(ent, fallingBlocks) != fallingBlocks.size()) return;
 
-        System.out.println("Group formed: " + components.size());
 
-        Block recipe = FallingBlockCraftingHelper.getRecipe(components);
+        // Get what block we should be making
+        Block recipe = FallingBlockCraftingHelper.getRecipe(fallingBlocks);
 
-        FallingBlockCraftingHelper.transformInto(components, recipe);
+
+        // Transform the first entity into the recipe result and destroy the rest
+        FallingBlockCraftingHelper.transformInto(fallingBlocks, recipe);
+
+
+        for (int i = 1; i < fallingBlocks.size(); i++)
+        {
+            fallingBlocks.get(i).discard();
+        }
     }
 
-    private static List<FallingBlockEntity> getCompatibleEntities(FallingBlockEntity entity, List<FallingBlockEntity> fallingBlocks)
+    private static int getCompatibleEntities(FallingBlockEntity entity, List<FallingBlockEntity> fallingBlocks)
     {
-        List<FallingBlockEntity> compatibleList = new LinkedList<FallingBlockEntity>();
+        int compatible = 0;
 
-        for (int i = 0; i < fallingBlocks.size(); i++)
+        List<FallingBlockEntity> possibleEntities = new LinkedList<FallingBlockEntity>(fallingBlocks);
+
+        for (int i = 0; i < possibleEntities.size(); i++)
         {
-            FallingBlockEntity fallingBlockEntity = fallingBlocks.get(i);
+            FallingBlockEntity fallingBlockEntity = possibleEntities.get(i);
 
             if (fallingBlockEntity == null) continue;
             
-            System.out.println("\n0: " + fallingBlockEntity.getPos().distanceTo(entity.getPos()) + "\n" + "1: " + fallingBlockEntity.getVelocity().distanceTo(entity.getVelocity()) + "\n" + (fallingBlockEntity.getPos().distanceTo(entity.getPos()) == 0) + " " + (fallingBlockEntity.getVelocity().distanceTo(entity.getVelocity()) == 0 ));
+            // System.out.println("\n0: " + fallingBlockEntity.getPos().distanceTo(entity.getPos()) + "\n" + "1: " + fallingBlockEntity.getVelocity().distanceTo(entity.getVelocity()) + "\n" + (fallingBlockEntity.getPos().distanceTo(entity.getPos()) == 0) + " " + (fallingBlockEntity.getVelocity().distanceTo(entity.getVelocity()) == 0 ));
 
             if (
                 fallingBlockEntity.getPos().distanceTo(entity.getPos()) == 0 &&
                 fallingBlockEntity.getVelocity().distanceTo(entity.getVelocity()) == 0)
             {
-                // Add our element to the list
-                compatibleList.add(fallingBlockEntity);
+                // Make a note that we've found a compatible one
+                compatible++;
                 // Remove it from candidates and make sure we go to the next element ok
-                fallingBlocks.set(i, null);
+                possibleEntities.set(i, null);
             }
         }
 
-        return compatibleList;
+        return compatible;
     }
 }

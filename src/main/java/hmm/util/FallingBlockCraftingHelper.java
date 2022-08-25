@@ -1,15 +1,12 @@
 package hmm.util;
 
-import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.FallingBlockEntity;
-import net.minecraft.entity.Entity.RemovalReason;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.World;
 
 
 public class FallingBlockCraftingHelper
@@ -21,36 +18,19 @@ public class FallingBlockCraftingHelper
 
     public static FallingBlockEntity transformInto(List<FallingBlockEntity> components, Block result) throws Throwable
     {
-        for (FallingBlockEntity fallingBlockEntity : components)
-        {
-            fallingBlockEntity.remove(RemovalReason.DISCARDED);
-        }
+        // Transform the remaining entity
+        FallingBlockEntity ent = components.get(0);
 
-        // "Transform" the remaining entity
-        FallingBlockEntity template = components.get(0);
+        if ( !( ent.world instanceof ServerWorld ) ) return null;
 
-        if ( !( template.world instanceof ServerWorld ) ) return null;
+        // Get the private field which stores the block data
+        Field block = FallingBlockEntity.class.getDeclaredField("block");
+        // Field block = FallingBlockEntity.class.getDeclaredField("field_7188");
 
-        // Use the private constructor in FallingBlockEntity
-        Constructor<FallingBlockEntity> privateCtor = FallingBlockEntity.class.getDeclaredConstructor(World.class, double.class, double.class, double.class, BlockState.class);
+        // Give us access to it and change it
+        block.setAccessible(true);
+        block.set(ent, result.getDefaultState());
 
-        privateCtor.setAccessible(true);
-
-        // Create a new falling block
-        FallingBlockEntity newFallingBlock = privateCtor.newInstance(
-            template.world,
-            template.getX(),
-            template.getY(),
-            template.getZ(),
-            result.getDefaultState()
-        );
-
-        // Spawn it
-        ((ServerWorld)template.world).spawnEntity(newFallingBlock);
-
-        // Destroy the final component
-        template.remove(RemovalReason.DISCARDED);
-
-        return newFallingBlock;
+        return ent;
     }
 }
