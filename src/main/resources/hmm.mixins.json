@@ -13,7 +13,8 @@
 		"shenanigans/CheckRailUpdates",
 		"shenanigans/CreateFallingBlock",
 		"shenanigans/HelperTicker",
-		"shenanigans/FallingBlockCrafting"
+		"shenanigans/FallingBlockCrafting",
+		"BarrierInSurvival"
 	],
 	"client": [],
 	"injectors": {
