@@ -52,8 +52,6 @@ public class FallingBlockCraftingHelper
             
             if (matches == blocks.size())
             {
-                System.out.println("Match found " + matches);
-
                 return recipe.result;
             }
         }
@@ -71,7 +69,8 @@ public class FallingBlockCraftingHelper
         if ( !( ent.world instanceof ServerWorld ) ) return null;
 
         // Get the private field which stores the block data
-        Field block = FallingBlockEntity.class.getDeclaredField("block");
+        Field block = FallingBlockEntity.class.getDeclaredFields()[1];
+        // Field block = FallingBlockEntity.class.getDeclaredField("block");
         // Field block = FallingBlockEntity.class.getDeclaredField("field_7188");
 
         // Give us access to it and change it
@@ -87,18 +86,21 @@ public class FallingBlockCraftingHelper
         public Recipe(Block result, Block... components) { this.result = result; this.components = components; }
         
         public Block result;
-
+        
         public Block[] components;
     }
-
-    public static Recipe[] RECIPES = {
+    
+    public static final Recipe[] RECIPES = {
         new Recipe(Blocks.LIGHT,                            Blocks.OAK_SLAB, Blocks.SPONGE),
         new Recipe(Blocks.SPAWNER,                          Blocks.ORANGE_GLAZED_TERRACOTTA, Blocks.GREEN_STAINED_GLASS_PANE),
         new Recipe(Blocks.PLAYER_HEAD,                      Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_STONE_BRICKS),
+        new Recipe(Blocks.PISTON_HEAD,                      Blocks.RED_SANDSTONE_WALL, Blocks.BLACK_STAINED_GLASS_PANE),
+        new Recipe(Blocks.BUDDING_AMETHYST,                 Blocks.ORANGE_WOOL, Blocks.DEEPSLATE),
         new Recipe(Blocks.PETRIFIED_OAK_SLAB,               Blocks.ANCIENT_DEBRIS, Blocks.OAK_PLANKS),
         
         new Recipe(Blocks.BEDROCK,                          Blocks.SANDSTONE_WALL, Blocks.STRIPPED_DARK_OAK_WOOD),
         new Recipe(Blocks.BARRIER,                          Blocks.WARPED_SLAB, Blocks.WHITE_TERRACOTTA),
+        new Recipe(Blocks.REINFORCED_DEEPSLATE,             Blocks.JUNGLE_FENCE_GATE, Blocks.COAL_BLOCK),
 
         new Recipe(Blocks.COMMAND_BLOCK,                    Blocks.RED_SANDSTONE_STAIRS, Blocks.AMETHYST_BLOCK),
         new Recipe(Blocks.REPEATING_COMMAND_BLOCK,          Blocks.HONEYCOMB_BLOCK, Blocks.BOOKSHELF),
@@ -114,16 +116,14 @@ public class FallingBlockCraftingHelper
         new Recipe(Blocks.NETHER_PORTAL,                    Blocks.YELLOW_GLAZED_TERRACOTTA, Blocks.DARK_OAK_PLANKS),
 
         new Recipe(Blocks.FARMLAND,                         Blocks.REDSTONE_LAMP, Blocks.LIGHT_BLUE_STAINED_GLASS_PANE),
-        new Recipe(Blocks.DIRT_PATH,                        Blocks.BRICK_SLAB, Blocks.MOSS_BLOCK),
+        new Recipe(Blocks.DIRT_PATH,                        Blocks.BRICK_SLAB, Blocks.MUD_BRICKS),
         new Recipe(Blocks.TALL_GRASS,                       Blocks.MOSSY_COBBLESTONE, Blocks.YELLOW_STAINED_GLASS),
         new Recipe(Blocks.LARGE_FERN,                       Blocks.QUARTZ_SLAB, Blocks.BASALT),
-        new Recipe(Blocks.TALL_SEAGRASS,                    Blocks.MUD, Blocks.WHITE_CONCRETE),
+        // new Recipe(Blocks.TALL_SEAGRASS,                    Blocks.MUD, Blocks.WHITE_CONCRETE),
 
         new Recipe(Blocks.WATER,                            Blocks.REDSTONE_ORE, Blocks.BLUE_ICE),
         new Recipe(Blocks.LAVA,                             Blocks.DEEPSLATE_BRICK_SLAB, Blocks.SMOOTH_SANDSTONE_STAIRS),
-
-        new Recipe(Blocks.PISTON_HEAD,                      Blocks.RED_SANDSTONE_WALL, Blocks.BLACK_STAINED_GLASS_PANE),
-        new Recipe(Blocks.FIRE,                             Blocks.TARGET, Blocks.GRAVEL),
+        new Recipe(Blocks.FIRE,                             Blocks.TARGET, Blocks.ORANGE_WOOL),
         new Recipe(Blocks.SOUL_FIRE,                        Blocks.PRISMARINE_SLAB, Blocks.GILDED_BLACKSTONE),
 
         new Recipe(Blocks.INFESTED_CHISELED_STONE_BRICKS,   Blocks.QUARTZ_STAIRS, Blocks.BRICK_WALL, Blocks.STONE_BRICK_WALL),
