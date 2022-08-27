@@ -14,9 +14,11 @@
 		"shenanigans/CreateFallingBlock",
 		"shenanigans/HelperTicker",
 		"shenanigans/FallingBlockCrafting",
+		"AllowSelectCharacter"
+	],
+	"client": [
 		"BarrierInSurvival"
 	],
-	"client": [],
 	"injectors": {
 		"defaultRequire": 1
 	}
