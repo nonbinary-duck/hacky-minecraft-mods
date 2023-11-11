@@ -66,7 +66,7 @@ public class FallingBlockCraftingHelper
         // Transform the remaining entity
         FallingBlockEntity ent = components.get(0);
 
-        if ( !( ent.world instanceof ServerWorld ) ) return null;
+        if ( !( ent.getWorld() instanceof ServerWorld ) ) return null;
 
         // Get the private field which stores the block data
         Field block = FallingBlockEntity.class.getDeclaredFields()[1];

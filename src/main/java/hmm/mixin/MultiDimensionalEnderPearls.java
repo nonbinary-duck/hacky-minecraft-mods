@@ -28,7 +28,7 @@ public abstract class MultiDimensionalEnderPearls extends ThrownItemEntity {
     public void transferPlayer(HitResult res, CallbackInfo ci)
     {
         // Check basic stuff
-        if (this.isRemoved() || this.world.isClient()) return;
+        if (this.isRemoved() || this.getWorld().isClient()) return;
         if ( !( this.getOwner() instanceof ServerPlayerEntity ) ) return;
 
         // Get information and cast it to its correct type
@@ -44,11 +44,11 @@ public abstract class MultiDimensionalEnderPearls extends ThrownItemEntity {
             // The normal ender pearl algorithm
 
             // Create the endermite
-            if (this.random.nextFloat() < 0.05f && this.world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING))
+            if (this.random.nextFloat() < 0.05f && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING))
             {
-                EndermiteEntity lv2 = EntityType.ENDERMITE.create(this.world);
+                EndermiteEntity lv2 = EntityType.ENDERMITE.create(this.getWorld());
                 lv2.refreshPositionAndAngles(player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
-                this.world.spawnEntity(lv2);
+                this.getWorld().spawnEntity(lv2);
             }
 
             // Teleport as the normal ways, except change the world first

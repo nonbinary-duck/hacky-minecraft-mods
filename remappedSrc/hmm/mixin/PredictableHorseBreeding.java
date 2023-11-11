@@ -96,7 +96,7 @@ public abstract class PredictableHorseBreeding extends AnimalEntity {
         if (Main.DEBUG)
         {
             // Give some useful information for debugging
-            SendMessages.sendMessageToAll(this.world,
+            SendMessages.sendMessageToAll(this.getWorld(),
                 String.format(
                     "Stats:\n" +
                     "    Stat Name: %s\n" +

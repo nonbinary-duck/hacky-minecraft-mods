@@ -26,7 +26,7 @@ public abstract class DespawningItemsWarning extends Entity {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ItemEntity;remove()V", ordinal = 1))
     public void onRemoveByTimeInject(CallbackInfo ci)
     {
-        SendMessages.sendMessageToAll(this.world,
+        SendMessages.sendMessageToAll(this.getWorld(),
             String.format(
                 "Item (%d x %s) was killed from timeout",
                 getStack().getCount(),
