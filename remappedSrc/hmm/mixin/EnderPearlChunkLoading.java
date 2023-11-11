@@ -32,7 +32,7 @@ public abstract class EnderPearlChunkLoading extends ThrownItemEntity
         // /data get entity @e[type=minecraft:ender_pearl, sort=nearest, limit=1] Owner
         // /summon minecraft:ender_pearl ~ ~3 ~ {Motion:[0d, 1d, 0d], Owner:[I; 1229857164, -314688488, -2018928863, 686132395]}
         // /data modify entity @e[type=minecraft:ender_pearl, sort=nearest, limit=1] Motion set value [0d, 0d, 1d]
-        if (!this.getWorld().isClient())
+        if (!this.method_48926().isClient())
         {
             // Calculate the next position and load it
             ChunkPos nextChunkPos = new ChunkPos(
@@ -45,7 +45,7 @@ public abstract class EnderPearlChunkLoading extends ThrownItemEntity
             
             // ChunkHelper.ForceLoadChunk(nextPos.getX(), nextPos.getZ(), 20, ((ServerWorld)this.getWorld()).getChunkManager());
 
-            ((ServerWorld)this.getWorld()).getChunkManager().addTicket(
+            ((ServerWorld)this.method_48926()).getChunkManager().addTicket(
                 // Our custom ticket with timeout of 30 ticks, technically same as "unknown", though this is probably better
                 PEARL_CHUNK_LOADER_TICKET,
                 // The chunk to load

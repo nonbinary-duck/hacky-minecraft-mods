@@ -32,11 +32,11 @@ public abstract class MultiDimensionalEnderPearls extends ThrownItemEntity {
         if ( !( this.getOwner() instanceof ServerPlayerEntity ) ) return;
 
         // Get information and cast it to its correct type
-        ServerWorld serverWorld   = (ServerWorld)this.getWorld();
+        ServerWorld serverWorld   = (ServerWorld)this.method_48926();
         ServerPlayerEntity player = (ServerPlayerEntity)this.getOwner();
 
         // Check that the player is in another dimension, and therefore our routine is needed
-        if (serverWorld.getDimension().equals(player.getWorld().getDimension())) return;
+        if (serverWorld.getDimension().equals(player.method_48926().getDimension())) return;
 
         // Check that the teleport would have otherwise gone through
         if (player.networkHandler.getConnection().isOpen() && !player.isSleeping())
