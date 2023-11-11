@@ -2,5 +2,6 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "cSpell.words": [
         "Minecraft"
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "disabled"
 }

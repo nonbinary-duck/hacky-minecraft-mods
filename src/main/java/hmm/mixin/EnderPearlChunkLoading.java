@@ -14,6 +14,7 @@ import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 
@@ -32,13 +33,19 @@ public abstract class EnderPearlChunkLoading extends ThrownItemEntity
         // /data get entity @e[type=minecraft:ender_pearl, sort=nearest, limit=1] Owner
         // /summon minecraft:ender_pearl ~ ~3 ~ {Motion:[0d, 1d, 0d], Owner:[I; 1229857164, -314688488, -2018928863, 686132395]}
         // /data modify entity @e[type=minecraft:ender_pearl, sort=nearest, limit=1] Motion set value [0d, 0d, 1d]
+
+
+        // vel is vec3d
+                    // pos is is also vec3d
+                    // so the block pos is the problem ????
+                    // why did they remove a continent feature?
+        Vec3d v = this.getVelocity().add(this.getPos());
         if (!this.getWorld().isClient())
         {
             // Calculate the next position and load it
             ChunkPos nextChunkPos = new ChunkPos(
-                new BlockPos(
-                    this.getVelocity().add(this.getPos())
-                )
+                new BlockPos((int)Math.floor(v.x), (int)Math.floor(v.y), (int)Math.floor(v.z)) // We'll have to do it this way I guess...
+                // Yes Java, I know it's a lossy conversion...
             );
 
             // System.out.println("Block x: " + nextPos.getX() + "z " + nextPos.getZ() + " Chunk x: " + cnext.x + "z " + cnext.z);

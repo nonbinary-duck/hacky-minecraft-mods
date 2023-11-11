@@ -18,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;
 
@@ -60,7 +61,8 @@ public abstract class Injects extends LockableContainerBlockEntity {
         setCustomName(Text.translatable("container.chest"));
         
         // Explode!
-        world.createExplosion(chest, DamageSource.MAGIC, new ExplosionBehavior(), pos.x, pos.y, pos.z, 8.5f, false, Explosion.DestructionType.BREAK);
+        // They changed these...
+        world.createExplosion(chest, playerEntity.getDamageSources().magic(), new ExplosionBehavior(), pos.x, pos.y, pos.z, 8.5f, false, World.ExplosionSourceType.TNT);
     }
 
     private void spawnSpooker(PlayerEntity playerEntity)
