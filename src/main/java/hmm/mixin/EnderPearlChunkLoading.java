@@ -38,7 +38,7 @@ public abstract class EnderPearlChunkLoading extends ThrownItemEntity
         // vel is vec3d
                     // pos is is also vec3d
                     // so the block pos is the problem ????
-                    // why did they remove a continent feature?
+                    // why did they remove a convenient feature?
         Vec3d v = this.getVelocity().add(this.getPos());
         if (!this.getWorld().isClient())
         {
