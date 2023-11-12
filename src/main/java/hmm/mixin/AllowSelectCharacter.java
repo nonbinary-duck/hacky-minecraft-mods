@@ -21,8 +21,5 @@ public abstract class AllowSelectCharacter
     private static void replaceSelectCharacter(char chr, CallbackInfoReturnable<Boolean> ci)
     {
         if (chr == '\u00a7') ci.setReturnValue(true);
-        Xoroshiro128PlusPlusRandom a = new Xoroshiro128PlusPlusRandom(550);
-
-        
     }
 }
